@@ -32,6 +32,23 @@
                     <div class="cards">
                         <h2 class="cards__titulo">Navegue pela galeria</h2>
                         <ul class="cards__lista">
+                            {% for imagem in imagens %}
+                                <li class="card">
+                                    <a href="{% url 'imagem' %}">
+                                        <img class="card__imagem" src="{% static '' %}" alt="foto">
+                                    </a>
+                                    <span class="card__tag">{{ imagem.nome }}</span>
+                                    <div class="card__info">
+                                        <p class="card__titulo">{{ imagem.nome }}</p>
+                                        <div class="card__texto">
+                                            <p class="card__descricao">{{ imagem.legenda }}</p>
+                                            <span>
+                                                <img src="{% static '/assets/ícones/1x/favorite_outline.png' %}" alt="ícone de coração">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </section>
