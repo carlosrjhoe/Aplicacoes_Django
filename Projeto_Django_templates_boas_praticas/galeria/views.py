@@ -8,4 +8,6 @@ def index(request):
     return render(request, 'galeria/index.html', contexto)
 
 def imagem(request):
-    return render(request, 'galeria/imagem.html')
+    imagens = Fotografia.objetos.all()
+    contexto = {'imagens': imagens}
+    return render(request, 'galeria/imagem.html', contexto)
