@@ -5,7 +5,7 @@
         <section class="conteudo">
             <section class="banner">
                 <img class="banner__imagem" src="{% static '/assets/imagens/Banner(2).png' %} " alt="banner Alura Space">
-                <h1 class="banner__titulo"> A galeria mais completa de fotos do espaço!</h1>
+                <h1 class="banner__titulo">Lista de personagens de Saint Seiya</h1>
             </section>
             <section class="tags">
                 <p class="tags__titulo">Busque por tags:</p>
@@ -20,66 +20,24 @@
                 <div class="cards">
                     <h2 class="cards__titulo">Navegue pela galeria</h2>
                     <ul class="cards__lista">
-                        <li class="card">
-                            <a href="{% url 'galeria:imagem' %}">
-                                <img class="card__imagem" src="{% static '/assets/imagens/galeria/carina-nebula.png' %} " alt="foto">
-                            </a>
-                            <span class="card__tag">Estrelas</span>
-                            <div class="card__info">
-                                <p class="card__titulo">Nome da foto</p>
-                                <div class="card__texto">
-                                    <p class="card__descricao">Fonte/fotógrafo/satélite</p>
-                                    <span>
-                                        <img src="{% static '/assets/ícones/1x/favorite_outline.png' %}" alt="ícone de coração">
-                                    </span>
+                        {% for cavaleiro in cavaleiros %}
+                            <li class="card">
+                                <a href="{% url 'galeria:imagem' %}">
+                                    <img class="card__imagem" src="{% static '/assets/imagens/galeria/carina-nebula.png' %} " alt="foto">
+                                </a>
+                                <span class="card__tag">{{ cavaleiro.nome }}</span>
+                                <div class="card__info">
+                                    <p class="card__titulo">{{ cavaleiro.constelacao }}</p>
+                                    <div class="card__texto">
+                                        <p class="card__descricao">{{ cavaleiro.descricao }}</p>
+                                        </br>
+                                        <span>
+                                            <img src="{% static '/assets/ícones/1x/favorite_outline.png' %}" alt="ícone de coração">
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li class="card">
-                            <a href="{% url 'galeria:imagem' %}">
-                                <img class="card__imagem" src="{% static '/assets/imagens/galeria/carina-nebula.png' %} " alt="foto">
-                            </a>
-                            <span class="card__tag">Estrelas</span>
-                            <div class="card__info">
-                                <p class="card__titulo">Nome da foto</p>
-                                <div class="card__texto">
-                                    <p class="card__descricao">Fonte/fotógrafo/satélite</p>
-                                    <span>
-                                        <img src="{% static '/assets/ícones/1x/favorite_outline.png' %} " alt="ícone de coração">
-                                    </span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="card">
-                            <a href="{% url 'galeria:imagem' %}">
-                                <img class="card__imagem" src="{% static '/assets/imagens/galeria/carina-nebula.png' %} " alt="foto">
-                            </a>
-                            <span class="card__tag">Estrelas</span>
-                            <div class="card__info">
-                                <p class="card__titulo">Nome da foto</p>
-                                <div class="card__texto">
-                                    <p class="card__descricao">Fonte/fotógrafo/satélite</p>
-                                    <span>
-                                        <img src="{% static '/assets/ícones/1x/favorite_outline.png' %} " alt="ícone de coração">
-                                    </span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="card">
-                            <a href="{% url 'galeria:imagem' %}">
-                                <img class="card__imagem" src="{% static '/assets/imagens/galeria/carina-nebula.png' %} " alt="foto">
-                            </a>
-                            <span class="card__tag">Estrelas</span>
-                            <div class="card__info">
-                                <p class="card__titulo">Nome da foto</p>
-                                <div class="card__texto">
-                                    <p class="card__descricao">Fonte/fotógrafo/satélite</p>
-                                    <span>
-                                        <img src="{% static '/assets/ícones/1x/favorite_outline.png' %} " alt="ícone de coração">
-                                    </span>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </section>
