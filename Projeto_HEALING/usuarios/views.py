@@ -2,8 +2,27 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.messages import constants
 from django.contrib import messages
+from django.contrib import auth
+
 
 # Create your views here.
+def login_view(request):
+    if request.method == 'GET':
+        return render(request, 'usuarios/login.html')
+    elif request.method == 'POST':
+        username = request.POST.get('username')
+        senha = request.POST.get('senha')
+
+        user = auth.authenticate(request, username=username, password=senha)
+
+        if user:
+            auth.login(request, user)
+            return redirect('/pacientes/home')
+
+        messages.add_message(request, constants.ERROR, 'Usuário ou senha inválidos!')
+        return redirect('/usuarios/login')
+
+
 def cadastro(request):
     if request.method == 'GET':
         return render(request, 'usuarios/cadastro.html')
@@ -32,3 +51,4 @@ def cadastro(request):
             email = email,
             password = senha
         )
+        return redirect('/usuarios/login/')
