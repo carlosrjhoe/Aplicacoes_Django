@@ -2,11 +2,16 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
+
+def is_medico(user):
+    return DadosMedico.objects.filter(user=user).exists()
+
 class Especialidades(models.Model):
     especialidade = models.CharField(max_length=255)
 
     def __str__(self) -> str:
         return self.especialidade
+
 
 class DadosMedico(models.Model):
     crm = models.CharField(max_length=30)
@@ -21,8 +26,8 @@ class DadosMedico(models.Model):
     descricao = models.TextField(null=True, blank=True)
     valor_consulta = models.FloatField(default=100)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    especialidade = models.ForeignKey(Especialidades, on_delete=models.DO_NOTHING, null=True, blank=True)
+    especialidade = models.ForeignKey(
+        Especialidades, on_delete=models.DO_NOTHING, null=True, blank=True)
 
     def __str__(self):
         return self.nome
-    
