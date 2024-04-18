@@ -9,12 +9,12 @@ from django.contrib.messages import constants
 def cadastro_medico(request):
     if is_medico(request.user):
         messages.add_message(request, constants.WARNING, 'Você já é médico!!')
-        return redirect('/medicos/abrir_horario')
+        return redirect('/medico/abrir_horario.html')
         
         
     if request.method == 'GET':
         context = Especialidades.objects.all()
-        return render(request, 'medico/cadastro_medico.html', {'context': context})
+        return render(request, '/medico/cadastro_medico.html', {'context': context})
     elif request.method == 'POST':
         crm = request.POST.get('crm')
         nome = request.POST.get('nome')
@@ -47,4 +47,13 @@ def cadastro_medico(request):
 
         dados_medico.save()
         messages.add_message(request, constants.SUCCESS, 'Cadastro médico realizado com sucesso!')
-        return redirect('/medicos/abrir_horario')
+        return redirect('/medico/abrir_horario.html')
+    
+def abrir_horario(request):
+    if not is_medico(request.user):
+        messages.add_message(request, constants.WARNING, 'Somente médicos podem abrir horário.')
+        return redirect('/usuarios/sair.html')
+    
+    if request.method == 'GET':
+        context = DadosMedico.objects.get(user=request.user)
+        return render(request, 'medico/abrir_horario.html', {'context': context})
