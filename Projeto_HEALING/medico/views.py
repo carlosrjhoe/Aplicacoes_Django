@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import Especialidades, DadosMedico, is_medico
+from .models import DatasAbertas
 from django.contrib import messages
 from django.contrib.messages import constants
+from datetime import datetime
 
 # Create your views here.
 
@@ -9,12 +11,12 @@ from django.contrib.messages import constants
 def cadastro_medico(request):
     if is_medico(request.user):
         messages.add_message(request, constants.WARNING, 'Você já é médico!!')
-        return redirect('/medico/abrir_horario.html')
-        
-        
+        return redirect('/medico/abrir_horario/')
+
     if request.method == 'GET':
-        context = Especialidades.objects.all()
-        return render(request, '/medico/cadastro_medico.html', {'context': context})
+        especialidades = Especialidades.objects.all()
+        return render(request, 'medico/cadastro_medico.html', {'especialidades':especialidades})
+    
     elif request.method == 'POST':
         crm = request.POST.get('crm')
         nome = request.POST.get('nome')
@@ -47,13 +49,32 @@ def cadastro_medico(request):
 
         dados_medico.save()
         messages.add_message(request, constants.SUCCESS, 'Cadastro médico realizado com sucesso!')
-        return redirect('/medico/abrir_horario.html')
-    
+        return redirect('/medico/abrir_horario')
+
+
 def abrir_horario(request):
+
     if not is_medico(request.user):
-        messages.add_message(request, constants.WARNING, 'Somente médicos podem abrir horário.')
-        return redirect('/usuarios/sair.html')
+        messages.add_message(request, constants.WARNING, 'Somente médicos podem acessar essa página.')
+        return redirect('usuarios/sair/')
+
+    if request.method == "GET":
+        dados_medicos = DadosMedico.objects.get(user=request.user)
+        return render(request, 'medico/abrir_horario.html', {'dados_medicos': dados_medicos})
     
-    if request.method == 'GET':
-        context = DadosMedico.objects.get(user=request.user)
-        return render(request, 'medico/abrir_horario.html', {'context': context})
+    elif request.method == "POST":
+        data = request.POST.get('data')
+        data_formatada = datetime.strptime(data, "%Y-%m-%dT%H:%M")
+        
+        if data_formatada <= datetime.now():
+            messages.add_message(request, constants.WARNING, 'A data deve ser maior ou igual a data atual.')
+            return redirect('/medico/abrir_horario/')
+        
+        horario_abrir = DatasAbertas(
+            data=data,
+            user=request.user
+        )
+        
+        horario_abrir.save()
+        messages.add_message(request, constants.SUCCESS, 'Horário cadastrado com sucesso.')
+        return redirect('/medico/abrir_horario/')

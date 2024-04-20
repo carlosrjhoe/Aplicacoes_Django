@@ -12,7 +12,7 @@
         <br /><br />
         <div class="row">
             <div class="col-md-8">
-                <img src="{{ context.foto.url }}" class="foto-perfil" alt="" />
+                <img src="{{ dados_medicos.foto.url }}" class="foto-perfil" alt="" />
                 <label style="margin-left: 30px; font-size: 25px" class="p-bold"
                     >Olá,
                     <span class="color-dark">{{request.user.username}}</span></label
@@ -29,7 +29,8 @@
                     Abrir horários para consultas
                 </p>
                 <hr />
-                <form action="#" method="POST">
+                <form action="{% url 'abrir_horario' %}" method="POST">
+                    {% csrf_token %}
                     <label for="">Escolher data:</label>
                     <input
                         type="datetime-local"

@@ -1,10 +1,10 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 {% load static %}
 
 {% block 'head' %}
     <link rel="stylesheet" href="{% static 'usuarios/css/usuarios.css' %}" />
     <link rel="stylesheet" href="{% static 'medicos/css/cadastro_medico.css' %}" />
-{% endblock 'head' %} 
+{% endblock 'head' %}
 
 {% block 'body' %}
     <div class="container">
@@ -18,10 +18,9 @@
                 <p class="p-bold">Vamos realizar seu cadastro médico legal.</p>
                 {% if messages %}
                 <br />
-                    {% for message in messages %}
-                        <section class="alert {{message.tags}}">{{message}}</section>
-                    {% endfor %}
-                {% endif %}
+                {% for message in messages %}
+                <section class="alert {{message.tags}}">{{message}}</section>
+                {% endfor %} {% endif %}
                 <br />
                 <form
                     action="{% url 'cadastro_medico' %}"
@@ -118,9 +117,11 @@
                     />
                     <br />
                     <label for="">Especialidade médica</label>
-                    <select name="especialidade" class="form-select" id="">
-                        {% for value in context %}
-                            <option value="{{ value.id }}">{{ value.especialidade }}</option>
+                    <select name="especialidades" class="form-select" id="">
+                        {% for especialidade in especialidades %}
+                            <option value="{{especialidade.id}}">
+                                {{especialidade}}
+                            </option>
                         {% endfor %}
                     </select>
                     <br />
